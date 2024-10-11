@@ -19,6 +19,7 @@ export class UsersService {
       throw new ConflictException('Email already exists');
     }
 
+    // PARA UTILIZAR FUNÇÃO 'hash' FOI NECESSARIO INSTALAR O 'bcryptjs'
     const hashedPassword = await hash(password, 12);
 
     const user = await this.usersRepo.create({
