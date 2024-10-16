@@ -2,12 +2,14 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtModule, JwtService } from '@nestjs/jwt';
+import { env } from 'src/shared/database/config/env';
 
 @Module({
   imports: [
     JwtModule.register({
+      global: true,
       signOptions: { expiresIn: '7d' },
-      secret: 'unsecure_jwt_secret',
+      secret: env.jwtSecret,
     }),
   ],
   controllers: [AuthController],
