@@ -43,7 +43,9 @@ export class AuthService {
 
     const emailExists = await this.usersRepo.findUnique({
       where: { email },
-      select: { id: true },
+      select: {
+        id: true,
+      },
     });
 
     if (emailExists) {
