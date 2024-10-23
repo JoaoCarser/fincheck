@@ -1,17 +1,23 @@
-import { type Prisma } from "@prisma/client";
-import { PrismaService } from "../prisma.service";
-import { Injectable } from "@nestjs/common";
-
+import { type Prisma } from '@prisma/client';
+import { PrismaService } from '../prisma.service';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class bankAccountsRepository {
-    constructor(private readonly prismService: PrismaService){}
+  constructor(private readonly prismService: PrismaService) {}
 
-     create(createDto: Prisma.BankAccountCreateArgs){
-        return  this.prismService.bankAccount.create(createDto);
-    }
+  async findMany(findManyDto: Prisma.BankAccountFindManyArgs) {
+    return await this.prismService.bankAccount.findMany(findManyDto);
+  }
 
-    // async findByName(name: Prisma.BankAccountFindFirstArgs){
-    //     return await this.prismService.bankAccount.findByName({name: name});
-    // }
+  async findFirst(findFirstDto: Prisma.BankAccountFindFirstArgs) {
+    return await this.prismService.bankAccount.findFirst(findFirstDto);
+  }
+  async create(createDto: Prisma.BankAccountCreateArgs) {
+    return await this.prismService.bankAccount.create(createDto);
+  }
+
+  async update(updateDto: Prisma.BankAccountUpdateArgs) {
+    return await this.prismService.bankAccount.update(updateDto);
+  }
 }
