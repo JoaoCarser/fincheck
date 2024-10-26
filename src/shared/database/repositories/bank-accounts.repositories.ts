@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma.service';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class bankAccountsRepository {
+export class BankAccountsRepository {
   constructor(private readonly prismService: PrismaService) {}
 
   async findMany(findManyDto: Prisma.BankAccountFindManyArgs) {
@@ -19,5 +19,9 @@ export class bankAccountsRepository {
 
   async update(updateDto: Prisma.BankAccountUpdateArgs) {
     return await this.prismService.bankAccount.update(updateDto);
+  }
+
+  async delete(deleteDto: Prisma.BankAccountDeleteArgs) {
+    return await this.prismService.bankAccount.delete(deleteDto);
   }
 }
