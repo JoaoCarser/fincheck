@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { hash } from 'bcryptjs';
@@ -51,24 +55,65 @@ export class UsersService {
     });
 
     return {
+      id: user.id,
       name: user.name,
       email: user.email,
     };
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    return await this.usersRepo.findAll({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(userId: string) {
+    const user = await this.usersRepo.findById({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return await this.usersRepo.findById({
+      where: {
+        id: userId,
+      },
+    });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(userId: string, updateUserDto: UpdateUserDto) {
+    const { email, name } = updateUserDto;
+
+    const user = await this.usersRepo.findById({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return await this.usersRepo.update({
+      where: { id: userId },
+      data: {
+        email,
+        name,
+      },
+      select: {
+        name: true,
+        email: true,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(userId: string) {
+    await this.usersRepo.delete({
+      where: {
+        id: userId,
+      },
+    });
   }
 }
