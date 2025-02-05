@@ -71,6 +71,7 @@ model Category {
   userId String @map("user_id") @db.Uuid
   name   String
   icon   String
+  type TransactionType
 
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   transactions Transaction[]
