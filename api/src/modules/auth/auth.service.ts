@@ -1,9 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersRepository } from 'src/shared/database/repositories/users.repositories';
 import { SigninDto } from './dto/signin.dto';
+import { SignUpDto } from './dto/signup.dto';
 import { compare, hash } from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
-import { SignUpDto } from '../users/dto/signup.dto';
 
 @Injectable()
 export class AuthService {
@@ -54,7 +54,7 @@ export class AuthService {
       },
     });
 
-    return this.generateAccessToken(user.id); //;
+    return this.generateAccessToken(user.id);
   }
 
   async signin(signinDto: SigninDto) {

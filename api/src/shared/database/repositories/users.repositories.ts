@@ -6,27 +6,19 @@ import { type Prisma } from '@prisma/client';
 export class UsersRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
+  async findAll(findManyArgs: Prisma.UserFindManyArgs) {
+    return await this.prismaService.user.findMany(findManyArgs);
+  }
+
   async findByEmail(findUnique: Prisma.UserFindUniqueArgs) {
     return await this.prismaService.user.findUnique(findUnique);
   }
 
-  async findById(findUnique: Prisma.UserFindUniqueArgs) {
+  async getById(findUnique: Prisma.UserFindUniqueArgs) {
     return await this.prismaService.user.findUnique(findUnique);
-  }
-
-  async findAll(findAll: Prisma.UserFindManyArgs) {
-    return await this.prismaService.user.findMany(findAll);
   }
 
   async create(createDto: Prisma.UserCreateArgs) {
     return await this.prismaService.user.create(createDto);
-  }
-
-  async update(updateDto: Prisma.UserUpdateArgs) {
-    return await this.prismaService.user.update(updateDto);
-  }
-
-  async delete(deleteDto: Prisma.UserDeleteArgs) {
-    return await this.prismaService.user.delete(deleteDto);
   }
 }

@@ -8,7 +8,9 @@ import { env } from 'src/shared/config/env';
   imports: [
     JwtModule.register({
       global: true,
-      secret: env.jwtSecret,
+
+      // Utiliza o validator config/env.ts para validar e obter as variáveis de ambiente.
+      secret: env.jwtSecret, 
       signOptions: { expiresIn: '7d' },
     }),
   ],
