@@ -10,11 +10,7 @@ export class UsersRepository {
     return await this.prismaService.user.findMany(findManyArgs);
   }
 
-  async findByEmail(findUnique: Prisma.UserFindUniqueArgs) {
-    return await this.prismaService.user.findUnique(findUnique);
-  }
-
-  async getById(findUnique: Prisma.UserFindUniqueArgs) {
+  async findUnique(findUnique: Prisma.UserFindUniqueArgs) {
     return await this.prismaService.user.findUnique(findUnique);
   }
 

@@ -15,7 +15,7 @@ export class AuthService {
   async singup(signUpDto: SignUpDto) {
     const { email, password } = signUpDto;
 
-    const emailExists = await this.usersRepo.findByEmail({
+    const emailExists = await this.usersRepo.findUnique({
       where: {
         email,
       },
@@ -60,7 +60,7 @@ export class AuthService {
   async signin(signinDto: SigninDto) {
     const { email, password } = signinDto;
 
-    const user = await this.usersRepo.findByEmail({
+    const user = await this.usersRepo.findUnique({
       where: {
         email,
       },

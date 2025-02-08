@@ -1,4 +1,11 @@
-import { Controller, Get, Param, ParseUUIDPipe, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthGuard } from '../auth/auth.guard';
 
@@ -12,8 +19,6 @@ export class UsersController {
   }
   @Get('me')
   me(@Req() request: any) {
-    console.log({meuUserID: request.userId})
-
-    return this.usersService.getUserById('userId')
+    return this.usersService.getUserById(request.userId);
   }
 }

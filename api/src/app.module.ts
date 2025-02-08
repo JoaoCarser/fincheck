@@ -1,4 +1,4 @@
-import { Global, Module } from '@nestjs/common';
+import { Global, Module, ValidationPipe } from '@nestjs/common';
 import { UsersModule } from './modules/users/users.module';
 import { APP_GUARD } from '@nestjs/core';
 import { DatabaseModule } from './shared/database/database.module';
