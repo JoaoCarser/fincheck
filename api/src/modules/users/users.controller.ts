@@ -1,14 +1,7 @@
-import {
-  Controller,
-  Get,
-  Param,
-  ParseUUIDPipe,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { AuthGuard } from '../auth/auth.guard';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
+
 
 @Controller('users')
 export class UsersController {
