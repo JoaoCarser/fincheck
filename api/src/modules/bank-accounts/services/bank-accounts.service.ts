@@ -3,13 +3,17 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateBankAccountDto } from './dto/create-bank-account.dto';
-import { UpdateBankAccountDto } from './dto/update-bank-account.dto';
+import { CreateBankAccountDto } from '../dto/create-bank-account.dto';
+import { UpdateBankAccountDto } from '../dto/update-bank-account.dto';
 import { BankAccountsRepository } from 'src/shared/database/repositories/bank-account.repositories';
+import { validateBankAccountOwnerShip } from './validate-bank-account-ownership.service';
 
 @Injectable()
 export class BankAccountsService {
-  constructor(private readonly bankAccountsRepo: BankAccountsRepository) {}
+  constructor(
+    private readonly bankAccountsRepo: BankAccountsRepository,
+    private readonly validateBankAccountOwnerShip: validateBankAccountOwnerShip,
+  ) {}
 
   async create(userId: string, createBankAccountDto: CreateBankAccountDto) {
     const { color, initialBalance, name, type } = createBankAccountDto;
@@ -38,16 +42,7 @@ export class BankAccountsService {
   ) {
     const { color, initialBalance, name, type } = updateBankAccountDto;
 
-    const isOwner = await this.bankAccountsRepo.findFirst({
-      where: {
-        userId,
-        id: bankAccountId,
-      },
-    });
-
-    if (!isOwner) {
-      throw new NotFoundException('Bank Account not found');
-    }
+    await this.validateBankAccountOwnerShip.validate(userId, bankAccountId);
 
     return await this.bankAccountsRepo.update({
       where: { id: bankAccountId },
@@ -61,16 +56,7 @@ export class BankAccountsService {
   }
 
   async remove(userId: string, bankAccountId: string) {
-    const isOwner = await this.bankAccountsRepo.findFirst({
-      where: {
-        userId,
-        id: bankAccountId,
-      },
-    });
-
-    if (!isOwner) {
-      throw new NotFoundException('Bank Account not found');
-    }
+    await this.validateBankAccountOwnerShip.validate(userId, bankAccountId);
 
     await this.bankAccountsRepo.delete({
       where: { id: bankAccountId },
