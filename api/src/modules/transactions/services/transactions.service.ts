@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTransactionDto } from './dto/create-transaction.dto';
-import { UpdateTransactionDto } from './dto/update-transaction.dto';
+import { CreateTransactionDto } from '../dto/create-transaction.dto';
+import { UpdateTransactionDto } from '../dto/update-transaction.dto';
 import { TransactionsRepository } from 'src/shared/database/repositories/transactions.repositories';
-import { ValidateBankAccountOwnerShip } from '../bank-accounts/services/validate-bank-account-ownership.service';
-import { ValidateCategoryOwnerShip } from '../categories/services/validate-category-ownership.service';
+import { ValidateBankAccountOwnerShip } from '../../bank-accounts/services/validate-bank-account-ownership.service';
+import { ValidateCategoryOwnerShip } from '../../categories/services/validate-category-ownership.service';
+import { ValidateTransactionOwnerShip } from './validate-transaction-ownership.service';
 
 @Injectable()
 export class TransactionsService {
@@ -11,6 +12,7 @@ export class TransactionsService {
     private readonly transactionsRepo: TransactionsRepository,
     private readonly validateBankAccountOwnerShip: ValidateBankAccountOwnerShip,
     private readonly validateCategoryOwnerShip: ValidateCategoryOwnerShip,
+    private readonly validateTransactionOwnerShip: ValidateTransactionOwnerShip,
   ) {}
   async create(userId: string, createTransactionDto: CreateTransactionDto) {
     const { bankAccountId, categoryId, date, name, type, value } =
@@ -45,7 +47,12 @@ export class TransactionsService {
     const { bankAccountId, categoryId, date, name, type, value } =
       updateTransactionDto;
 
-    await this.validateEntitiesOwnership({ userId, bankAccountId, categoryId });
+    await this.validateEntitiesOwnership({
+      userId,
+      bankAccountId,
+      categoryId,
+      transactionId,
+    });
 
     return await this.transactionsRepo.update({
       where: { id: transactionId },
@@ -60,22 +67,33 @@ export class TransactionsService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} transaction`;
+  async remove(userId: string, transactionId: string) {
+    await this.validateEntitiesOwnership({ userId, transactionId });
+
+    await this.transactionsRepo.delete({
+      where: { id: transactionId },
+    });
+
+    return null;
   }
 
   private async validateEntitiesOwnership({
     userId,
     bankAccountId,
     categoryId,
+    transactionId,
   }: {
     userId: string;
-    bankAccountId: string;
-    categoryId: string;
+    bankAccountId?: string;
+    categoryId?: string;
+    transactionId?: string;
   }) {
     await Promise.all([
-      this.validateBankAccountOwnerShip.validate(userId, bankAccountId),
-      this.validateCategoryOwnerShip.validate(userId, categoryId),
+      transactionId &&
+        this.validateTransactionOwnerShip.validate(userId, transactionId),
+      bankAccountId &&
+        this.validateBankAccountOwnerShip.validate(userId, bankAccountId),
+      categoryId && this.validateCategoryOwnerShip.validate(userId, categoryId),
     ]);
   }
 }

@@ -9,6 +9,10 @@ export class TransactionsRepository {
     return await this.prismaService.transaction.findMany(findManyDto);
   }
 
+  async findFirst(findFirst: Prisma.TransactionFindFirstArgs) {
+    return await this.prismaService.transaction.findFirst(findFirst);
+  }
+
   async create(createDto: Prisma.TransactionCreateArgs) {
     return await this.prismaService.transaction.create(createDto);
   }
@@ -16,4 +20,9 @@ export class TransactionsRepository {
   async update(updateDto: Prisma.TransactionUpdateArgs) {
     return await this.prismaService.transaction.update(updateDto);
   }
+
+  async delete(deleteDto: Prisma.TransactionDeleteArgs) {
+    return await this.prismaService.transaction.delete(deleteDto);
+  }
+
 }

@@ -1,5 +1,5 @@
 import { IsEnum, IsHexColor, IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { BankAccountType } from '../entities/BankAccount';
+import { BankAccountType } from '../entities/bank-account.entity';
 
 export class CreateBankAccountDto {
   @IsString()
