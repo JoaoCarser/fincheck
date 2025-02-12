@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { CategoriesService } from './categories.service';
+import { CategoriesService } from './services/categories.service';
 import { CategoriesController } from './categories.controller';
-import { DatabaseModule } from 'src/shared/database/database.module';
+import { ValidateCategoryOwnerShip } from './services/validate-category-ownership.service';
 
 @Module({
   controllers: [CategoriesController],
-  providers: [CategoriesService],
+  providers: [CategoriesService, ValidateCategoryOwnerShip],
+  exports: [ValidateCategoryOwnerShip],
 })
 export class CategoriesModule {}

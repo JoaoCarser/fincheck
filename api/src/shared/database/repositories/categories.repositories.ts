@@ -9,4 +9,8 @@ export class CategoriesRepository {
   async findAll(findManyDto: Prisma.CategoryFindManyArgs) {
     return await this.prismaService.category.findMany(findManyDto);
   }
+
+  async findFirst(findFirstDto: Prisma.CategoryFindFirstArgs) {
+    return await this.prismaService.category.findFirst(findFirstDto);
+  }
 }

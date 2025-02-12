@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { BankAccountsRepository } from 'src/shared/database/repositories/bank-account.repositories';
 
 @Injectable()
-export class validateBankAccountOwnerShip {
+export class ValidateBankAccountOwnerShip {
 
     constructor(private readonly bankAccountsRepo: BankAccountsRepository) {}
 
