@@ -4,7 +4,7 @@ import { CategoriesRepository } from 'src/shared/database/repositories/categorie
 @Injectable()
 export class ValidateCategoryOwnerShip {
 
-    constructor(private readonly categoriesRepo: CategoriesRepository) {}
+  constructor(private readonly categoriesRepo: CategoriesRepository) {}
 
   async validate(userId: string, categoryId: string) {
     const isOwner = await this.categoriesRepo.findFirst({
