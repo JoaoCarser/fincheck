@@ -6,7 +6,9 @@ import { type Prisma } from '@prisma/client';
 export class BankAccountsRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async findMany(findManyArgs: Prisma.BankAccountFindManyArgs) {
+  // HOUVE A TIPAGEM DESSA MANEIRA PARA QUE NO BANKACCOUNT SERVICE 
+  // PARA QUE PUDESSE RECONHECER O TRANSACTIONS
+  async findMany<T extends Prisma.BankAccountFindManyArgs>(findManyArgs: Prisma.SelectSubset<T, Prisma.BankAccountFindManyArgs>) {
     return await this.prismaService.bankAccount.findMany(findManyArgs);
   }
 
